@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import Form from './forms/login'
+import Navbar from './pages/navbar';
 
 function App() {
   return (
-    <SignUpForm/>
+    <>
+    <Navbar/>
+    </>
   )
 }
 

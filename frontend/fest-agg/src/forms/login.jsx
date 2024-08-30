@@ -1,6 +1,6 @@
 import { useState } from "react";
 import './form.css';
-export default function LoginForm() {
+export default function Login() {
     let [formData, setFormData] = useState({
         emailId: "",
         password: "",
@@ -23,6 +23,7 @@ export default function LoginForm() {
 
     return (
         <div className="form">
+            <h2>Welcome to Login Form</h2>
             <form action="" onSubmit={handleSubmit}>
                 <div className="email">
                     <label htmlFor="emailId">Enter Email Id</label>

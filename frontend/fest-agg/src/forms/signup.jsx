@@ -1,7 +1,7 @@
 import { useState } from "react";
 import './form.css';
 
-export default function SignUpForm() {
+export default function Signup() {
     let [formData, setFormData] = useState({
         emailId: "",
         username: "",
@@ -42,6 +42,7 @@ export default function SignUpForm() {
 
     return (
         <div className="form">
+        <h2>Welcome to Signup Form</h2>
         <form onSubmit={handleSubmit}>
             <div className="email">
                 <label htmlFor="emailId">Enter Email Id</label>

@@ -4,75 +4,108 @@
     align-items: center;
     justify-content: center;
     width: 32rem;
-    height: 30rem;
-    background-color: #21231b;
-    color: #e4eacf;
+    min-height: 30rem;
+    max-height: 100rem;
+    background-color: #FFFFFF; /* White background */
+    color: #2D3748; /* Dark Gray for text */
     margin: auto;
     text-align: center;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .email, .user, .password, .collegeName, .contactNo, .idCardImage {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
-    width: 100%; /* Take up the full width of the form */
-    max-width: 25rem; /* Ensure a max width for the inputs */
-    padding: 5px;
-    align-self: center; /* Center the input containers */
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 25rem;
+    padding: 0 10px;
+    align-items: center;
+    box-sizing: border-box;
 }
 
-#emailId, #username, #password, #collegeName, #contactNo {
-    background-color: #414635;
-    color: #ccd3b6;
-    border: none;
-    border-radius: 3px;
-    padding: 10px;
+input {
+    background-color: #F0F4F8; /* Light Gray for input background */
+    color: #2D3748; /* Dark Gray for text */
+    border: 2px solid #69A3FF; /* Light Blue from logo for borders */
+    border-radius: 5px;
+    padding: 12px;
     font-size: 18px;
     line-height: 1.5;
-    width: 100%; /* Take up the full width of the container */
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+input:hover {
+    border-color: #FFA500; /* Accent Orange for hover border */
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.6); /* Orange shadow */
+    transform: scale(1.05);
 }
 
 label {
     font-size: 20px;
     margin-bottom: 10px;
     font-weight: 500;
-    text-align: left; /* Align labels to the left */
+    text-align: left;
+    color: #FF6B6B; /* Coral for labels */
 }
 
-input {
-    font-size: 18px;
-    padding: 8px;
-    width: 100%; /* Ensure input fields take up the full width */
+input[type="file"] {
+    padding: 5px;
 }
 
 .form button {
     margin-top: 20px;
+    margin-bottom: 20px;
     padding: 15px 30px;
     font-size: 16px;
-    background-color: #e4eacf;
-    color: #21231b;
-    width: 100%; 
+    background-color: #4169E1; /* Dark Blue from logo */
+    color: #FFFFFF; /* White text */
+    width: 100%;
     max-width: 20rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    align-self: center; /* Center the button within the form */
+    align-self: center;
+    box-sizing: border-box;
 }
 
 .form button:hover {
-    background-color: #d2d8b0;
+    background-color: #FFA500; /* Accent Orange for hover */
     transform: scale(1.05);
 }
 
 .extrafeature {
-    margin: 10px;
-    padding: 20px;
+    margin: 20px 0;
+    padding: 15px 25px;
     display: flex;
-    width: 60%;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    background-color: #F0F4F8; /* Light Gray for a subtle background */
+    border: 1px solid #69A3FF; /* Light Blue border */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-size: 16px;
+    color: #2D3748; /* Dark Gray for text */
+}
+
+.extrafeature a {
+    color: #4169E1; /* Dark Blue for links */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.extrafeature a:hover {
+    color: #FFA500; /* Accent Orange for hover */
+    transform: scale(1.05);
+    text-decoration: underline;
 }
