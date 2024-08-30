@@ -1,6 +1,6 @@
 import { useState } from "react";
-
-export default function Form() {
+import './form.css';
+export default function LoginForm() {
     let [formData, setFormData] = useState({
         emailId: "",
         password: "",
@@ -24,24 +24,28 @@ export default function Form() {
     return (
         <div className="form">
             <form action="" onSubmit={handleSubmit}>
-            <label htmlFor="emailId">Enter Email Id</label>
-            <input 
-            placeholder="Email Id" 
-            value = {formData.emailId}
-            onChange={handleInputChange}
-            id="emailId"
-            name="emailId"
-            />
-            <br />
-            <label htmlFor="password">Enter PassWord</label>
-            <input 
-            placeholder="Password" 
-            type="password"
-            value = {formData.password}
-            onChange={handleInputChange}
-            id="password"
-            name="password"
-            />
+                <div className="email">
+                    <label htmlFor="emailId">Enter Email Id</label>
+                    <input 
+                    placeholder="Email Id" 
+                    value = {formData.emailId}
+                    onChange={handleInputChange}
+                    id="emailId"
+                    name="emailId"
+                    />
+                </div>
+                <br />
+                <div className="password">
+                    <label htmlFor="password">Enter Password</label>
+                    <input 
+                    placeholder="Password" 
+                    type="password"
+                    value = {formData.password}
+                    onChange={handleInputChange}
+                    id="password"
+                    name="password"
+                />
+                </div>
             <button>Login</button>
         </form>
         <div className="extrafeature">
@@ -50,5 +54,4 @@ export default function Form() {
         </div>
         </div>
     )
-
 }
