@@ -14,15 +14,17 @@ const Footer = () => {
       </div>
       <div className="followus">
         <a href="#">Follow us</a>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+        <div className="icons">
+        <a className="icon" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faSquareInstagram} />
         </a>
-        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+        <a  className="icon" href="https://twitter.com" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faSquareXTwitter} />
         </a>
-        <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+        <a  className="icon" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
           <FontAwesomeIcon icon={faYoutube} />
         </a>
+        </div>
       </div>
       <div className="subscribe">
         <p>Subscibe To our Newsletter!</p>

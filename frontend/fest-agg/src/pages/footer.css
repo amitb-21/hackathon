@@ -1,33 +1,33 @@
-/* footer.css */
 .footer {
-    background-color: #F0F4F8; /* Light Gray background */
+    background-color: #F0F4F8;
     padding: 20px 0;
     text-align: center;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-top: 2px solid #69A3FF; /* Light Blue border */
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    border-top: 2px solid #69A3FF;
+    flex-wrap: wrap;
+    width: 100%;
   }
   
   .footer div {
     flex: 1;
-    margin: 10px; /* Adds space between items */
+    margin: 10px;
   }
   
   .footer a {
-    color: #4169E1; /* Dark Blue text */
+    color: #4169E1;
     text-decoration: none;
     font-weight: bold;
   }
   
   .footer a:hover {
-    color: #FFA500; /* Accent Orange on hover */
+    color: #FFA500;
   }
   
   .subscribe p {
     font-size: 1.2em;
-    color: #2D3748; /* Dark Gray text */
+    color: #2D3748;
     margin-bottom: 10px;
   }
   
@@ -35,41 +35,76 @@
     padding: 10px;
     width: 70%;
     max-width: 300px;
-    border: 2px solid #4169E1; /* Dark Blue border */
+    border: 2px solid #4169E1;
     border-radius: 5px;
     margin-right: 10px;
   }
   
   .subscribe input[type="text"]:focus {
     outline: none;
-    border-color: #00CED1; /* Teal border on focus */
+    border-color: #00CED1;
   }
   
   .subscribe button {
     padding: 10px 20px;
-    background-color: #FFA500; /* Accent Orange background */
+    background-color: #FFA500;
     border: none;
     border-radius: 5px;
-    color: #FFFFFF; /* White text */
+    color: #FFFFFF;
     font-weight: bold;
     cursor: pointer;
+    margin-top: 15px;
   }
   
   .subscribe button:hover {
-    background-color: #FF6B6B; /* Coral background on hover */
+    background-color: #FF6B6B;
   }
   
-  /* footer.css */
-.followus a {
-    margin: 0 10px;
-    color: #4169E1; /* Dark Blue color */
+  .followus {
+    display: flex;
+    flex-direction: column;
+  }
+  .icon {
+    padding: 5px;
+  }
+  .followus a {
+    color: #4169E1;
+    transition: color 0.3s, transform 0.3s;
+    margin-bottom: 10px;
   }
   
   .followus a:hover {
-    color: #FFA500; /* Accent Orange on hover */
+    color: #FFA500;
   }
   
   .followus svg {
-    font-size: 24px; /* Adjust icon size */
+    font-size: 24px;
   }
+  
+  .followus a:hover svg {
+    font-size: 30px;
+  }
+  
+  .followus .fa-youtube:hover {
+    color: #FF0000;
+  }
+  
+  .followus .fa-square-x-twitter:hover {
+    color: #000000;
+  }
+  
+  .followus .fa-square-instagram:hover {
+    color: #8a3ab9;
+  }
+  
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  main {
+    flex: 1;
+  }  
+  
   
