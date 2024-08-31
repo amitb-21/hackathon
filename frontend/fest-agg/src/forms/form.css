@@ -16,7 +16,7 @@
     box-sizing: border-box;
 }
 
-.email, .user, .password, .collegeName, .contactNo, .idCardImage {
+.email, .user, .password, .collegeName, .contactNo, .city, .state, .festName, .permissionLetterImage, .maxPeople, .noOfDays, .pricePerDay, .dateOfFest {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
