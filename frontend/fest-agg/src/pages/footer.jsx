@@ -1,7 +1,7 @@
 import React from 'react'
 import './footer.css'
 
-const footer = () => {
+const Footer = () => {
   return (
     <div className="shivangi"></div>
   )
