@@ -10,11 +10,10 @@ export default function About() {
       <div className="content">
         <div className="content-photo">
           <img src="collage.jpg" alt="content photo" />
-          <img src="festiverse-logo.jpg" alt="festiverse logo" />
         </div>
         <div className="content-text">
           <div className="content-text-head">
-            <h1>Welcome to Festiverse – your premier platform for discovering and participating in top college events nationwide.</h1>
+            <h1>Welcome to Festiverse - your premier platform for discovering and participating in top college events nationwide.</h1>
           </div>
           <div className="content-text-para">
             <p>Festiverse is dedicated to connecting students with a diverse array of events, from academic conferences to cultural festivals. Our mission is to enhance campus life by providing a centralized hub for event discovery and registration.</p>
@@ -31,17 +30,18 @@ export default function About() {
             </div>
           </div>
         </div>
-        <div className="photo-gallery">
-          <h3>Photo Gallery</h3>
-          <h1>Explore Our Recent Photo Gallery</h1>
-          <div className="photos">
-            <img src="photo1.jpg" alt="Event 1" />
-            <img src="photo2.jpg" alt="Event 2" />
-            <img src="photo3.jpg" alt="Event 3" />
-            <img src="photo4.jpg" alt="Event 4" />
-          </div>
+      </div>
+      <div className="photo-gallery">
+        <h3>Photo Gallery</h3>
+        <h1>Explore Our Recent Photo Gallery</h1>
+        <div className="photos">
+          <img src="photo1.jpg" alt="Event 1" />
+          <img src="photo2.jpg" alt="Event 2" />
+          <img src="photo3.jpg" alt="Event 3" />
+          <img src="photo4.jpg" alt="Event 4" />
         </div>
       </div>
     </div>
   );
 }
+

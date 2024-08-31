@@ -1,26 +1,32 @@
+/* General Styles for the About Page */
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
     color: #2D3748;
     background-color: #F0F4F8;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 .main {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 20px;
 }
 
 .header {
+    width: 100%;
+    height: 200px;
+    background-color: #4169E1;
+    color: #FFFFFF;
     text-align: center;
-    margin-bottom: 30px;
+    padding: 20px 0;
+    position: relative;
+    box-sizing: border-box;
+    margin: 0; /* Ensure no margin to avoid gaps */
 }
 
 .header h1 {
     font-size: 36px;
-    color: #4169E1;
     margin: 10px 0;
 }
 
@@ -39,28 +45,38 @@ body {
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .content-photo {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 20px;
     margin-bottom: 30px;
 }
 
 .content-photo img {
-    width: 300px;
+    width: 300px; /* Default size for other images */
     height: 200px;
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Increase size of collage.jpg */
+.content-photo img[src="collage.jpg"] {
+    width: 500px; /* New size */
+    height: auto; /* Maintain aspect ratio */
+}
+
 .content-text {
     max-width: 800px;
-    text-align: left;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .content-text-head h1 {
@@ -134,6 +150,7 @@ body {
     transform: scale(1.05);
 }
 
+/* Responsive Styles */
 @media (max-width: 768px) {
     .content-photo {
         flex-direction: column;
@@ -147,7 +164,6 @@ body {
 
     .content-text {
         padding: 0 20px;
-        text-align: center;
     }
 
     .content-text-head h1 {
@@ -162,5 +178,20 @@ body {
 
     .photos img {
         width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-links a {
+        font-size: 16px;
+    }
+
+    .action-btn {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+
+    .navbar-logo img {
+        height: 50px;
     }
 }
