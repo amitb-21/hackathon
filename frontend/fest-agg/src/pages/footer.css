@@ -1,0 +1,75 @@
+/* footer.css */
+.footer {
+    background-color: #F0F4F8; /* Light Gray background */
+    padding: 20px 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 2px solid #69A3FF; /* Light Blue border */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  }
+  
+  .footer div {
+    flex: 1;
+    margin: 10px; /* Adds space between items */
+  }
+  
+  .footer a {
+    color: #4169E1; /* Dark Blue text */
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .footer a:hover {
+    color: #FFA500; /* Accent Orange on hover */
+  }
+  
+  .subscribe p {
+    font-size: 1.2em;
+    color: #2D3748; /* Dark Gray text */
+    margin-bottom: 10px;
+  }
+  
+  .subscribe input[type="text"] {
+    padding: 10px;
+    width: 70%;
+    max-width: 300px;
+    border: 2px solid #4169E1; /* Dark Blue border */
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .subscribe input[type="text"]:focus {
+    outline: none;
+    border-color: #00CED1; /* Teal border on focus */
+  }
+  
+  .subscribe button {
+    padding: 10px 20px;
+    background-color: #FFA500; /* Accent Orange background */
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF; /* White text */
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .subscribe button:hover {
+    background-color: #FF6B6B; /* Coral background on hover */
+  }
+  
+  /* footer.css */
+.followus a {
+    margin: 0 10px;
+    color: #4169E1; /* Dark Blue color */
+  }
+  
+  .followus a:hover {
+    color: #FFA500; /* Accent Orange on hover */
+  }
+  
+  .followus svg {
+    font-size: 24px; /* Adjust icon size */
+  }
+  
