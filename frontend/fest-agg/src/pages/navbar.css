@@ -1,4 +1,4 @@
-/* Reset margin and padding to eliminate gaps */
+
 body {
     margin: 0;
     padding: 0;
@@ -7,7 +7,7 @@ body {
 .navbar-main {
     margin: 0;
     padding: 0;
-    /* Ensuring no gap by setting margin and padding to zero */
+
 }
 
 .navbar {

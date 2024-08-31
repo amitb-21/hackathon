@@ -6,7 +6,7 @@ export default function Navbar() {
         <div className="navbar-main">
             <nav className="navbar">
                 <div className="navbar-logo">
-                    <img src="/festiverse-logo.png" alt="festiverse-logo" />
+                    <img src="/festiverse-logo.png"  alt="festiverse-logo" />
                 </div>
                 <ul className="navbar-links">
                     <li><a href="#home">Home</a></li>

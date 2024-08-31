@@ -1,0 +1,64 @@
+.fest-categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    background: linear-gradient(to right, #fcb0ff, #6a0dad); /* Gradient background */
+    background-size: cover;
+    background-position: center;
+}
+
+.categories-tagline {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.category-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px; /* Set a max-width to keep the layout tidy */
+}
+
+.category-card {
+    flex: 1;
+    margin: 20px;
+    padding: 20px;
+    background: #ffffff; /* Solid background for cards */
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.category-card:hover {
+    transform: translateY(-10px) scale(1.05); /* Slightly scale up and move up on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.category-card h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.category-card p {
+    font-size: 1rem;
+    color: #666;
+}
+
+.category-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease; /* Smooth transition for image zoom effect */
+}
+
+.category-card:hover .category-image {
+    transform: scale(1.1); /* Slightly scale up the image on hover */
+}

@@ -1,0 +1,74 @@
+/* src/ContactUs.css */
+
+/* Gradient Background for the entire page */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(120deg, #f0f7f8, #61a5f2); /* Soft gradient background */
+  min-height: 100vh; /* Ensure it covers the full viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container for the Contact Us page */
+.contact-us-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+  border-radius: 10px; /* Rounded corners for the container */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Header styling */
+.contact-us-container h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Introductory paragraph styling */
+.contact-us-container p {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+  color: #666;
+}
+
+/* Contact Details Section */
+.contact-details {
+  margin-bottom: 40px;
+  text-align: left;
+  font-size: 1.2em;
+}
+
+.contact-details h3 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.contact-details p {
+  color: #555;
+}
+
+.contact-details a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .contact-details {
+    text-align: center;
+  }
+
+  .map {
+    margin-top: 20px;
+  }
+}
