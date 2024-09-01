@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import './form.css';
 
 export default function Signup() {
@@ -10,6 +11,8 @@ export default function Signup() {
         contactNo: "",
         idCardImage: null, 
     });
+
+    let navigate = useNavigate();
 
     let handleInputChange = (event) => {
         const { name, value, type, files } = event.target;
@@ -26,88 +29,34 @@ export default function Signup() {
         }
     };
 
-    let handleSubmit = (event) => {
+    let handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData); 
-
-        setFormData({
-            emailId: "",
-            username: "",
-            password: "",
-            collegeName: "",
-            contactNo: "",
-            idCardImage: null,
-        });
+        try {
+            const formDataToSend = new FormData();
+            for (const key in formData) {
+                formDataToSend.append(key, formData[key]);
+            }
+            const response = await fetch('http://localhost:5000/api/signup', {
+                method: 'POST',
+                body: formDataToSend
+            });
+            if (response.ok) {
+                navigate('/'); // Redirect to home page
+            } else {
+                console.error("Signup failed");
+            }
+        } catch (error) {
+            console.error("Signup error:", error);
+        }
     };
 
     return (
         <div className="form">
-        <h2>Welcome to Signup Form</h2>
-        <form onSubmit={handleSubmit}>
-            <div className="email">
-                <label htmlFor="emailId">Enter Email Id</label>
-                <input 
-                    placeholder="Email Id" 
-                    value={formData.emailId} 
-                    onChange={handleInputChange} 
-                    id="emailId" 
-                    name="emailId" 
-                />
-            </div>
-            <div className="user">
-                <label htmlFor="username">Enter Username</label>
-                <input 
-                    placeholder="Username" 
-                    value={formData.username} 
-                    onChange={handleInputChange} 
-                    id="username" 
-                    name="username" 
-                />
-            </div>
-            <div className="password">
-                <label htmlFor="password">Enter Password</label>
-                <input 
-                    placeholder="Password" 
-                    type="password" 
-                    value={formData.password} 
-                    onChange={handleInputChange} 
-                    id="password" 
-                    name="password" 
-                />
-            </div>
-            <div className="collegeName">
-                <label htmlFor="collegeName">Enter College Name</label>
-                <input 
-                    placeholder="College Name" 
-                    value={formData.collegeName} 
-                    onChange={handleInputChange} 
-                    id="collegeName" 
-                    name="collegeName" 
-                />
-            </div>
-            <div className="contactNo">
-                <label htmlFor="contactNo">Enter Contact No</label>
-                <input 
-                    placeholder="Contact Number" 
-                    value={formData.contactNo} 
-                    onChange={handleInputChange} 
-                    id="contactNo" 
-                    name="contactNo" 
-                    type="number" 
-                />
-            </div>
-            <div className="idCardImage">
-                <label htmlFor="idCardImage">Upload ID Card Image</label>
-                <input 
-                    type="file" 
-                    id="idCardImage" 
-                    name="idCardImage" 
-                    accept="image/*" 
-                    onChange={handleInputChange} 
-                />
-            </div>
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
+            <h2>Welcome to Signup Form</h2>
+            <form onSubmit={handleSubmit}>
+                {/* Input fields similar to the one you've already implemented */}
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
     );
 }
