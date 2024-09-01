@@ -1,86 +1,82 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors');
-const multer = require('multer');
 const app = express();
 const port = 5000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/yourdbname', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/Backend', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
-// Event Schema
+// Define schemas and models
 const EventSchema = new mongoose.Schema({
-  name: String,
-  date: String,
-  status: String,
-  description: String,
+    name: String,
+    date: String,
+    status: String,
+    description: String,
+});
+
+const FestSchema = new mongoose.Schema({
+    name: String,
+    city: String,
+    state: String,
+    noOfMaxPeople: Number,
+    pricePerDay: Number,
+    dateOfFest: String,
+    theme: String,
 });
 
 const Event = mongoose.model('Event', EventSchema);
+const Fest = mongoose.model('Fest', FestSchema);
 
+// Routes for events
 app.get('/api/events', async (req, res) => {
-  try {
-    const events = await Event.find();
-    res.json(events);
-  } catch (error) {
-    res.status(500).send(error.toString());
-  }
+    try {
+        const events = await Event.find();
+        res.json(events);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
 });
 
-// User Schema
-const UserSchema = new mongoose.Schema({
-  emailId: String,
-  username: String,
-  password: String,
-  collegeName: String,
-  contactNo: String,
-  idCardImage: String, // Storing the filename or path of the uploaded image
+// Routes for fests
+app.get('/api/fests', async (req, res) => {
+    try {
+        const name = req.query.name;
+        if (typeof name !== 'string') {
+            return res.status(400).send('Invalid query parameter');
+        }
+        const fests = await Fest.find({ name: req.query.name });
+        res.json(fests);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
 });
 
-const User = mongoose.model('User', UserSchema);
-
-// Multer setup for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+app.post('/api/fests', async (req, res) => {
+    try {
+        const newFest = new Fest({
+            name: req.body.name,
+            city: req.body.city,
+            state: req.body.state,
+            noOfMaxPeople: req.body.noOfMaxPeople,
+            pricePerDay: req.body.pricePerDay,
+            dateOfFest: req.body.dateOfFest,
+            theme: req.body.theme
+        });
+        await newFest.save();
+        res.status(201).send(newFest);
+    } catch (error) {
+        res.status(400).send(error.toString());
+    }
 });
 
-const upload = multer({ storage: storage });
-
-// For Login
-app.post('/api/login', async (req, res) => {
-  const { emailId, password } = req.body;
-  const user = await User.findOne({ emailId, password });
-  if (user) {
-    res.status(200).send(user);
-  } else {
-    res.status(401).send('Invalid credentials');
-  }
-});
-
-// For Signup
-app.post('/api/signup', upload.single('idCardImage'), async (req, res) => {
-  const user = new User({
-    emailId: req.body.emailId,
-    username: req.body.username,
-    password: req.body.password,
-    collegeName: req.body.collegeName,
-    contactNo: req.body.contactNo,
-    idCardImage: req.file ? req.file.filename : null
-  });
-  await user.save();
-  res.status(201).send(user);
-});
-
+// Start server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}`);
 });

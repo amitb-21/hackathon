@@ -1,3 +1,65 @@
+/* General form styles */
+.form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF; /* Background color for form */
+}
+
+.form h2 {
+    text-align: center;
+    color: #2D3748; /* Dark Gray text color */
+    margin-bottom: 20px;
+}
+
+.form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"],
+.form input[type="file"] {
+    padding: 10px;
+    border: 2px solid #4169E1; /* Dark Blue border */
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form input[type="text"]:focus,
+.form input[type="email"]:focus,
+.form input[type="password"]:focus {
+    outline: none;
+    border-color: #00CED1; /* Teal border on focus */
+}
+
+.form button {
+    padding: 10px 20px;
+    background-color: #FFA500; /* Accent Orange */
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF; /* White text */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto; /* Center the button horizontally */
+}
+
+.form button:hover {
+    background-color: #FF6B6B; /* Coral color on hover */
+    transform: scale(1.05);
+}
+
+/* Home button styling */
 .home-button {
     margin-top: 20px;
     padding: 15px 30px;
