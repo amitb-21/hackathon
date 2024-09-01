@@ -36,8 +36,10 @@ input[type="file"] {
     margin-bottom: 15px;
 }
 
-input[type="file"] {
-    padding: 3px; /* Adjust padding for file input */
+input[type="email"]::placeholder,
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    color: #A0AEC0; /* Light Gray for placeholders */
 }
 
 button[type="submit"] {
@@ -90,6 +92,28 @@ button[type="submit"]:hover {
     text-align: center;
 }
 
+/* Additional styling specific to Login component */
+.email,
+.password {
+    margin-bottom: 15px;
+}
+
+.email label,
+.password label {
+    font-size: 16px;
+    color: #2D3748; /* Dark Gray for labels */
+}
+
+.email input,
+.password input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 .extrafeature {
     margin-top: 20px;
     text-align: center;
@@ -98,9 +122,9 @@ button[type="submit"]:hover {
 .extrafeature a {
     display: inline-block;
     margin: 0 10px;
+    font-size: 16px;
     color: #69A3FF; /* Light Blue for links */
     text-decoration: none;
-    font-size: 16px;
 }
 
 .extrafeature a:hover {

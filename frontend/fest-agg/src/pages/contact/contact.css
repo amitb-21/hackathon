@@ -1,74 +1,108 @@
-/* src/ContactUs.css */
-
-/* Gradient Background for the entire page */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(120deg, #f0f7f8, #61a5f2); /* Soft gradient background */
-  min-height: 100vh; /* Ensure it covers the full viewport height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Container for the Contact Us page */
-.contact-us-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 50px 20px;
+.contact-header {
+  background-color: #4169E1; 
+  color: #FFFFFF;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
-  border-radius: 10px; /* Rounded corners for the container */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 40px 20px;
+  margin-bottom: 30px;
+  margin-top: 0px;
 }
 
-/* Header styling */
-.contact-us-container h2 {
-  font-size: 2.5em;
+.contact-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.contact-form {
+  flex: 1 1 50%;
+  max-width: 600px; /* Adjust max-width to fit your layout */
+  padding: 20px;
+  background-color: #FFFFFF; /* White background for form */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for form */
+  margin-bottom: 40px; /* Space between the form and the address section */
+}
+
+.contact-form h2 {
+  color: #4169E1;
   margin-bottom: 20px;
-  color: #333;
+  font-size: 1.6rem; /* Larger font size for heading */
 }
 
-/* Introductory paragraph styling */
-.contact-us-container p {
-  font-size: 1.2em;
-  margin-bottom: 40px;
-  color: #666;
+.contact-form label {
+  display: block;
+  margin-bottom: 12px; /* More spacing between labels */
+  font-size: 1rem; /* Adjust font size */
+  color: #2D3748; /* Dark gray text color */
 }
 
-/* Contact Details Section */
-.contact-details {
-  margin-bottom: 40px;
-  text-align: left;
-  font-size: 1.2em;
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px; /* Increased padding for better usability */
+  border: 1px solid #CCC; /* Light gray border */
+  border-radius: 5px;
+  margin-bottom: 15px; /* Increased spacing between fields */
+  font-size: 1rem; /* Adjust font size */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
 }
 
-.contact-details h3 {
-  font-size: 1.8em;
-  margin-bottom: 20px;
-  color: #333;
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #4169E1; /* Change border color on focus */
+  box-shadow: 0 0 8px rgba(65, 105, 225, 0.3); /* Subtle shadow on focus */
+  outline: none; /* Remove default outline */
 }
 
-.contact-details p {
-  color: #555;
+.contact-form textarea {
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 120px; /* Minimum height for textareas */
 }
 
-.contact-details a {
-  color: #007bff;
+.contact-form button {
+  background-color: #4169E1;
+  color: #FFFFFF;
+  padding: 12px 24px; /* Adjust padding */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem; /* Font size for button text */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.contact-form button:hover {
+  background-color: #3653A6; /* Darker shade on hover */
+}
+
+.contact-info {
+  flex: 1 1 50%;
+  max-width: 600px; /* Adjust max-width to fit your layout */
+  padding: 20px;
+  text-align: center;
+  background-color: #FFFFFF; /* White background for info section */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for info section */
+}
+
+.contact-info h2 {
+  color: #4169E1;
+  margin-bottom: 15px;
+  font-size: 1.6rem; /* Larger font size for heading */
+}
+
+.contact-info p {
+  color: #2D3748;
+  font-size: 1rem; /* Adjust font size */
+  margin-bottom: 10px; /* Space between paragraphs */
+}
+
+.contact-info a {
+  color: #4169E1;
   text-decoration: none;
 }
 
-.contact-details a:hover {
+.contact-info a:hover {
   text-decoration: underline;
-}
-
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-  .contact-details {
-    text-align: center;
-  }
-
-  .map {
-    margin-top: 20px;
-  }
 }

@@ -1,283 +1,87 @@
-body {
-  margin: 0;
-  padding: 0;
-  padding-top: 70px; /* Space for navbar */
-}
-
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 30px;
-  background-color: #4169E1;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  flex-wrap: wrap;
-  margin: 0; /* Remove default margin */
-  position: fixed; /* Fixed positioning */
-  width: 100%; /* Full width */
-  top: 0; /* Stick to top */
-  left: 0; /* Stick to left */
-  z-index: 1000; /* Ensure it's above other elements */
-}
-
-.navbar-logo img {
-  height: 60px;
-  width: auto;
-  display: block;
-}
-
-.navbar-links {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-  flex-grow: 1;
-  justify-content: center;
-}
-
-.navbar-links li {
-  display: inline;
-}
-
-.navbar-links a {
-  text-decoration: none;
-  color: #FFFFFF;
-  font-weight: 500;
-  font-size: 18px;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.navbar-links a:hover {
-  color: #FFD700;
-  transform: scale(1.1);
-}
-
-.navbar-actions {
-  display: flex;
-  gap: 15px;
-}
-
-.action-btn {
-  background-color: #FFA500;
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: #FFFFFF;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.action-btn:hover {
-  background-color: #FF6B6B;
-  transform: scale(1.1);
-}
-
-.signup-btn {
-  background-color: #FFA500;
-}
-
-@media (max-width: 768px) {
-  .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-  }
-
-  .navbar-logo {
-      margin-bottom: 15px;
-  }
-
-  .navbar-links {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 15px;
-      margin: 0;
-  }
-
-  .navbar-actions {
-      flex-direction: column;
-      align-items: flex-start;
-      width: 100%;
-      margin-top: 15px;
-  }
-
-  .action-btn {
-      width: 100%;
-      text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar-links a {
-      font-size: 16px;
-  }
-
-  .action-btn {
-      padding: 8px 16px;
-      font-size: 16px;
-  }
-
-  .navbar-logo img {
-      height: 50px;
-  }
-}
-
-.footer {
-  background-color: #F0F4F8;
-  padding: 20px 0;
-  text-align: center;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-top: 2px solid #69A3FF;
-  flex-wrap: wrap;
-  width: 100%; /* Full width */
-  position: relative; /* Ensure it's positioned relative to its content */
-}
-
-.footer div {
-  flex: 1;
-  margin: 10px;
-}
-
-.footer a {
-  color: #4169E1;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.footer a:hover {
-  color: #FFA500;
-}
-
-.subscribe p {
-  font-size: 1.2em;
-  color: #2D3748;
-  margin-bottom: 10px;
-}
-
-.subscribe input[type="text"] {
-  padding: 10px;
-  width: 70%;
-  max-width: 300px;
-  border: 2px solid #4169E1;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-.subscribe input[type="text"]:focus {
-  outline: none;
-  border-color: #00CED1;
-}
-
-.subscribe button {
-  padding: 10px 20px;
-  background-color: #FFA500;
-  border: none;
-  border-radius: 5px;
-  color: #FFFFFF;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 15px;
-}
-
-.subscribe button:hover {
-  background-color: #FF6B6B;
-}
-
-.followus {
-  display: flex;
-  flex-direction: column;
-}
-
-.icon {
-  padding: 5px;
-}
-
-.followus a {
-  color: #4169E1;
-  transition: color 0.3s, transform 0.3s;
-  margin-bottom: 10px;
-}
-
-.followus a:hover {
-  color: #FFA500;
-}
-
-.followus svg {
-  font-size: 24px;
-}
-
-.followus a:hover svg {
-  font-size: 30px;
-}
-
-.followus .fa-youtube:hover {
-  color: #FF0000;
-}
-
-.followus .fa-square-x-twitter:hover {
-  color: #000000;
-}
-
-.followus .fa-square-instagram:hover {
-  color: #8a3ab9;
-}
-
-.app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
-
+/* General styling for the events page */
 .event-page-container {
-  padding: 20px;
+  font-family: Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.event-header {
+  background-color: #4169E1; /* Dark Blue */
+  color: #FFFFFF;
+  text-align: center;
+  padding: 40px 20px;
+  margin-bottom: 30px;
+}
+
+.event-header h1 {
+  margin: 0;
+}
+
+.event-header p {
+  margin: 10px 0 0;
 }
 
 .event-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  padding: 20px;
+}
+
+.event-container {
+  margin-bottom: 20px;
+}
+
+.event-container h2 {
+  color: #4169E1; /* Dark Blue */
+  margin-bottom: 20px;
 }
 
 .event-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid #CCC;
+  border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s;
+  margin-bottom: 10px;
+  background-color: #FFFFFF; /* White */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.event-card:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+.event-date {
+  margin-bottom: 10px;
 }
 
-.event-card.ongoing {
-  background-color: #e0ffe0; /* Light green for ongoing events */
-}
-
-.event-card.upcoming {
-  background-color: #e0e0ff; /* Light blue for upcoming events */
+.event-date p {
+  margin: 5px 0;
+  color: #2D3748; /* Dark Gray */
 }
 
 .event-status {
-  font-weight: bold;
-  display: block;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #FF6B6B; /* Coral */
+  color: #FFFFFF;
+}
+
+.event-info h3 {
+  margin: 10px 0;
+  color: #4169E1; /* Dark Blue */
+}
+
+.event-info p {
+  color: #2D3748; /* Dark Gray */
+  margin-bottom: 10px;
 }
 
 .register-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  background-color: #4169E1; /* Dark Blue */
+  color: #FFFFFF;
   padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  text-transform: uppercase;
 }
 
 .register-button:hover {
-  background-color: #0056b3;
+  background-color: #3653A6; /* Slightly darker blue */
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import './form.css';
 
 export default function Login() {
@@ -67,8 +67,8 @@ export default function Login() {
             </form>
             {errorMessage && <div className="error">{errorMessage}</div>}
             <div className="extrafeature">
-                <a href="/signup">Create New Account</a>
-                <a href="/forgot-password">Forgot Password</a>
+                <Link to="/signup">Create New Account</Link>
+                <Link to="/forgot-password">Forgot Password</Link>
             </div>
             <button className="home-button" onClick={() => navigate('/')}>Go to Home Page</button>
         </div>

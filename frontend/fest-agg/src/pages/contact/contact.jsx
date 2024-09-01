@@ -1,24 +1,40 @@
-// src/ContactUs.jsx
-import React from 'react';
-import './contact.css';
+import "./contact.css";
+import { Link } from 'react-router-dom';
 
-const ContactUs = () => {
+export default function Contact() {
   return (
-    <div className="contact-us-container">
-      <h2>Contact Us</h2>
-      <p>If you have any questions or need further information, feel free to reach out to us using the contact details below.</p>
-
-      {/* Contact Details Section */}
-      <div className="contact-details">
-        <h3>Our Contact Information</h3>
-        <p><strong>Phone:</strong> <a href="tel:+91 6578457998">+1 234 567 890</a></p>
-        <p><strong>Email:</strong> <a href="mailto:info@festiverse.com">info@yourcompany.com</a></p>
-        <p><strong>Address:</strong> 1234 Your Street, Your City, Your Country</p>
-        <p><strong>Business Hours:</strong> Monday - Friday: 9:00 AM - 6:00 PM</p>
-      </div>
-
-      </div>
+    <div className="contact-page">
+      <header className="contact-header">
+        <h1>Contact Us</h1>
+        <p><Link to="/">Home</Link> / Contact Us</p>
+      </header>  
+      <section className="contact-content">
+        <div className="contact-form">
+          <h2>Get in Touch</h2>
+          <form>
+            <label>
+              Name:
+              <input type="text" name="name" required />
+            </label>
+            <label>
+              Email:
+              <input type="email" name="email" required />
+            </label>
+            <label>
+              Message:
+              <textarea name="message" rows="5" required></textarea>
+            </label>
+            <button type="submit">Send Message</button>
+          </form>
+        </div>
+        <div className="contact-info">
+          <h2>Our Address</h2>
+          <p>123 Event Lane, Suite 456<br/>Festiverse City, EC 78901</p>
+          <h2>Contact Details</h2>
+          <p>Email: <a href="mailto:info@festiverse.com">info@festiverse.com</a></p>
+          <p>Phone: (123) 456-7890</p>
+        </div>
+      </section>
+    </div>
   );
-};
-
-export default ContactUs;
+}
