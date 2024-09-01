@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './navbar.css';
 
 export default function Navbar() {
@@ -6,17 +7,17 @@ export default function Navbar() {
         <div className="navbar-main">
             <nav className="navbar">
                 <div className="navbar-logo">
-                    <img src="/festiverse-logo.png"  alt="festiverse-logo" />
+                    <img src="/festiverse-logo.png" alt="festiverse-logo" />
                 </div>
                 <ul className="navbar-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#event">Event</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/about">About</Link></li>
+                    <li><Link to="/events">Events</Link></li>
+                    <li><Link to="/contactus">Contact</Link></li>
                 </ul>
                 <div className="navbar-actions">
-                    <a href="#login" className="action-btn">Log In</a>
-                    <a href="#signup" className="action-btn signup-btn">Sign Up</a>
+                    <Link to="/login" className="action-btn">Log In</Link> {/* Updated Link */}
+                    <Link to="/signup" className="action-btn signup-btn">Sign Up</Link> {/* Updated Link */}
                 </div>
             </nav>
         </div>
