@@ -1,11 +1,12 @@
 import "./about.css";
+import { Link } from 'react-router-dom';
 
 export default function About() {
   return (
     <div className="about-page">
       <header className="about-header">
         <h1>About</h1>
-        <p><a className="breadcrumb-link" href="/">Home</a> / About</p>
+        <p><Link to="/">Home</Link> / About</p>
       </header>  
       <section className="about-content">
         <div className="about-image">

@@ -52,7 +52,6 @@ export default function Login() {
                         name="emailId"
                     />
                 </div>
-                <br />
                 <div className="password">
                     <label htmlFor="password">Enter Password</label>
                     <input 
@@ -71,6 +70,7 @@ export default function Login() {
                 <a href="/signup">Create New Account</a>
                 <a href="/forgot-password">Forgot Password</a>
             </div>
+            <button className="home-button" onClick={() => navigate('/')}>Go to Home Page</button>
         </div>
-    )
+    );
 }

@@ -1,70 +1,8 @@
-.form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 32rem;
-    min-height: 30rem;
-    max-height: 100rem;
-    background-color: #FFFFFF; /* White background */
-    color: #2D3748; /* Dark Gray for text */
-    margin-top: 2rem;
-    margin: auto;
-    text-align: center;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.email, .user, .password, .collegeName, .contactNo, .city, .state, .festName, .permissionLetterImage, .maxPeople, .noOfDays, .pricePerDay, .dateOfFest {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    width: 100%;
-    max-width: 25rem;
-    padding: 0 10px;
-    align-items: center;
-    box-sizing: border-box;
-}
-
-input {
-    background-color: #F0F4F8; /* Light Gray for input background */
-    color: #2D3748; /* Dark Gray for text */
-    border: 2px solid #69A3FF; /* Light Blue from logo for borders */
-    border-radius: 5px;
-    padding: 12px;
-    font-size: 18px;
-    line-height: 1.5;
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-input:hover {
-    border-color: #FFA500; /* Accent Orange for hover border */
-    box-shadow: 0 0 8px rgba(255, 165, 0, 0.6); /* Orange shadow */
-    transform: scale(1.05);
-}
-
-label {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: 500;
-    text-align: left;
-    color: #FF6B6B; /* Coral for labels */
-}
-
-input[type="file"] {
-    padding: 5px;
-}
-
-.form button {
+.home-button {
     margin-top: 20px;
-    margin-bottom: 20px;
     padding: 15px 30px;
     font-size: 16px;
-    background-color: #4169E1; /* Dark Blue from logo */
+    background-color: #69A3FF; /* Light Blue from logo */
     color: #FFFFFF; /* White text */
     width: 100%;
     max-width: 20rem;
@@ -77,36 +15,7 @@ input[type="file"] {
     box-sizing: border-box;
 }
 
-.form button:hover {
-    background-color: #FFA500; /* Accent Orange for hover */
+.home-button:hover {
+    background-color: #4169E1; /* Dark Blue for hover */
     transform: scale(1.05);
-}
-
-.extrafeature {
-    margin: 20px 0;
-    padding: 15px 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 80%;
-    background-color: #F0F4F8; /* Light Gray for a subtle background */
-    border: 1px solid #69A3FF; /* Light Blue border */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #2D3748; /* Dark Gray for text */
-}
-
-.extrafeature a {
-    color: #4169E1; /* Dark Blue for links */
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.extrafeature a:hover {
-    color: #FFA500; /* Accent Orange for hover */
-    transform: scale(1.05);
-    text-decoration: underline;
 }

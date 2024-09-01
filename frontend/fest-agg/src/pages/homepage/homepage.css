@@ -1,24 +1,23 @@
-/* Main container styling with enhanced background */
 .main {
     display: flex;
+    flex-wrap: wrap; /* Allow flex items to wrap */
     align-items: center;
-    justify-content: space-between;
+    justify-content: center; /* Center align content horizontally */
     height: 100vh;
     text-align: center;
     background-image: url("image2.jpg");
-    background-repeat:no-repeat ;
-    background-size:cover;
+    background-repeat: no-repeat;
+    background-size: cover;
     color: #ffffff;
     font-family: 'Arial', sans-serif;
     overflow: hidden;
     padding: 20px;
 }
 
-/* Text container styling with distinct background */
 .text-container {
-    flex: 1;
+    flex: 1 1 400px; /* Allow it to grow and shrink but not be smaller than 400px */
     padding: 40px;
-    max-width: 1200px;
+    max-width: 600px;
     background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for text */
     border-radius: 10px;
     margin-right: 20px; /* Spacing between text and image */
@@ -39,9 +38,8 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Image container and sliding animation */
 .image-container {
-    flex: 1;
+    flex: 1 1 400px; /* Allow it to grow and shrink but not be smaller than 400px */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,9 +53,9 @@
     height: auto;
     border-radius: 10px;
     position: absolute;
-    transition: transform 1s ease-in-out; /* Smooth slide effect */
+    transition: transform 1s ease-in-out;
     transform: translateX(100%); /* Start off-screen to the right */
-    animation: slideIn 12s infinite; /* Longer animation duration to match image change timing */
+    animation: slideIn 12s infinite;
 }
 
 /* Keyframe for sliding images left to right */

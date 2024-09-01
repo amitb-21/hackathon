@@ -54,9 +54,10 @@ export default function Signup() {
         <div className="form">
             <h2>Welcome to Signup Form</h2>
             <form onSubmit={handleSubmit}>
-                {/* Input fields similar to the one you've already implemented */}
+                {/* Input fields */}
                 <button type="submit">Sign Up</button>
             </form>
+            <button className="home-button" onClick={() => navigate('/')}>Go to Home Page</button>
         </div>
     );
 }

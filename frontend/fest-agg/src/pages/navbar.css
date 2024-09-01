@@ -1,13 +1,12 @@
-
 body {
     margin: 0;
     padding: 0;
+    padding-top: 70px; /* Space for navbar */
 }
 
 .navbar-main {
     margin: 0;
     padding: 0;
-
 }
 
 .navbar {
@@ -18,13 +17,16 @@ body {
     background-color: #4169E1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex-wrap: wrap;
+    width: 100%; /* Full width */
+    position: relative;
+    box-sizing: border-box; /* Include padding and border in width */
     margin: 0; /* Remove default margin */
 }
 
 .navbar-logo img {
     height: 60px;
     width: auto;
-    display: block; /* Ensure no additional spacing from image */
+    display: block;
 }
 
 .navbar-links {
