@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     padding: 40px;
-    background: linear-gradient(to right, #fcb0ff, #6a0dad); /* Gradient background */
+    background: linear-gradient(to right, #69A3FF, #4169E1); /* Light and Dark Blue gradient background */
     background-size: cover;
     background-position: center;
 }
@@ -12,7 +12,7 @@
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: #FFD700; /* Soft Yellow for text to stand out */
     text-align: center;
 }
 
@@ -27,8 +27,8 @@
     flex: 1;
     margin: 20px;
     padding: 20px;
-    background: #ffffff; /* Solid background for cards */
-    border: 2px solid #ddd;
+    background: #FFFFFF; /* White background for cards */
+    border: 2px solid #F0F4F8; /* Light Gray border */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -42,13 +42,13 @@
 
 .category-card h2 {
     font-size: 1.5rem;
-    color: #333;
+    color: #2D3748; /* Dark Gray for headings */
     margin-bottom: 10px;
 }
 
 .category-card p {
     font-size: 1rem;
-    color: #666;
+    color: #666; /* Darker Gray for text */
 }
 
 .category-image {
