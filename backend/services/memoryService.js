@@ -371,31 +371,32 @@ class MemoryService {
 
   /**
    * Format context for AI prompt (human-readable)
+   * FIXED: Added null checks for all properties
    */
   formatContextForAI(enrichedContext) {
     const { 
-      currentSensors, 
-      trends, 
-      pastConversations, 
-      farmerProfile, 
-      irrigationHistory, 
-      anomalies, 
-      queryType,
-      dailySummaries 
-    } = enrichedContext;
+      currentSensors = {}, 
+      trends = {}, 
+      pastConversations = [], 
+      farmerProfile = null, 
+      irrigationHistory = null, 
+      anomalies = [], 
+      queryType = 'general',
+      dailySummaries = [] 
+    } = enrichedContext || {};
     
     let contextText = `
-=== QUERY TYPE: ${queryType.toUpperCase()} ===
+=== QUERY TYPE: ${(queryType || 'general').toUpperCase()} ===
 
 === CURRENT SENSOR DATA ===
-Moisture: ${currentSensors.moisture}%
-PH: ${currentSensors.ph}
-Nitrogen: ${currentSensors.nitrogen} ppm
-Phosphorus: ${currentSensors.phosphorus} ppm
-Potassium: ${currentSensors.potassium} ppm
-Temperature: ${currentSensors.temperature}°C
-Humidity: ${currentSensors.humidity}%
-Crop: ${currentSensors.crop}
+Moisture: ${currentSensors.moisture || 0}%
+PH: ${currentSensors.ph || 6.5}
+Nitrogen: ${currentSensors.nitrogen || 150} ppm
+Phosphorus: ${currentSensors.phosphorus || 50} ppm
+Potassium: ${currentSensors.potassium || 180} ppm
+Temperature: ${currentSensors.temperature || 25}°C
+Humidity: ${currentSensors.humidity || 60}%
+Crop: ${currentSensors.crop || 'Unknown'}
 Motor Status: ${currentSensors.motorStatus ? 'ON (irrigating)' : 'OFF'}
 ${currentSensors.manualMode ? '⚠️  MANUAL MODE: Auto-irrigation disabled by farmer' : '✓ AUTO MODE: ESP32 managing irrigation'}
 `;
@@ -432,8 +433,8 @@ ${currentSensors.manualMode ? '⚠️  MANUAL MODE: Auto-irrigation disabled by 
     // Add irrigation history
     if (irrigationHistory) {
       contextText += `\n=== IRRIGATION PATTERNS ===\n`;
-      contextText += `Recent Activity: ${irrigationHistory.totalEvents} events, ${irrigationHistory.totalMinutes} min total\n`;
-      if (irrigationHistory.commonTimes.length > 0) {
+      contextText += `Recent Activity: ${irrigationHistory.totalEvents || 0} events, ${irrigationHistory.totalMinutes || 0} min total\n`;
+      if (irrigationHistory.commonTimes && irrigationHistory.commonTimes.length > 0) {
         contextText += `Common Times: ${irrigationHistory.commonTimes.join(', ')}\n`;
       }
     }
@@ -441,14 +442,14 @@ ${currentSensors.manualMode ? '⚠️  MANUAL MODE: Auto-irrigation disabled by 
     // Add farmer profile insights
     if (farmerProfile) {
       contextText += `\n=== FARMER PROFILE ===\n`;
-      contextText += `Current Crop: ${farmerProfile.currentCrop.name}\n`;
+      contextText += `Current Crop: ${farmerProfile.currentCrop?.name || 'Unknown'}\n`;
       if (farmerProfile.topIssues && farmerProfile.topIssues.length > 0) {
         contextText += `Recurring Issues: ${farmerProfile.topIssues.join(', ')}\n`;
       }
       if (farmerProfile.preferredMethods && farmerProfile.preferredMethods.length > 0) {
         contextText += `Preferred Methods: ${farmerProfile.preferredMethods.join(', ')}\n`;
       }
-      contextText += `Response Rate: ${(farmerProfile.responseRate * 100).toFixed(0)}%\n`;
+      contextText += `Response Rate: ${((farmerProfile.responseRate || 0) * 100).toFixed(0)}%\n`;
     }
 
     // Add daily summary insights (last few days)
@@ -456,7 +457,7 @@ ${currentSensors.manualMode ? '⚠️  MANUAL MODE: Auto-irrigation disabled by 
       contextText += `\n=== LAST 3 DAYS SUMMARY ===\n`;
       dailySummaries.slice(0, 3).forEach(s => {
         const date = new Date(s.date).toLocaleDateString();
-        contextText += `${date}: Moisture ${s.moisture.avg.toFixed(1)}%, Irrigation ${s.irrigation.totalEvents} events\n`;
+        contextText += `${date}: Moisture ${s.moisture?.avg?.toFixed(1) || 'N/A'}%, Irrigation ${s.irrigation?.totalEvents || 0} events\n`;
       });
     }
 

@@ -1,0 +1,533 @@
+.crop-health-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.health-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.health-header h2 {
+  font-size: 28px;
+  color: #2c5f2d;
+  margin-bottom: 8px;
+}
+
+.health-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+.health-content {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Upload Section */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.upload-area {
+  border: 3px dashed #4caf50;
+  border-radius: 16px;
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #f8fdf8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.upload-area:hover {
+  border-color: #45a049;
+  background: #f1f8f4;
+  transform: translateY(-2px);
+}
+
+.upload-area svg {
+  color: #4caf50;
+}
+
+.upload-area h3 {
+  font-size: 20px;
+  color: #2c5f2d;
+  margin: 0;
+}
+
+.upload-area p {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+.file-info {
+  font-size: 12px !important;
+  color: #999 !important;
+}
+
+.image-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.image-preview {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 400px;
+  object-fit: contain;
+  background: #f5f5f5;
+}
+
+.clear-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.clear-button:hover {
+  background: #ff5252;
+  color: white;
+  transform: scale(1.1);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.analyze-button,
+.change-button {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.analyze-button {
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  color: white;
+}
+
+.analyze-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.analyze-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.analyze-button .spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.change-button {
+  background: white;
+  color: #666;
+  border: 2px solid #e0e0e0;
+}
+
+.change-button:hover {
+  border-color: #4caf50;
+  color: #4caf50;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  border-radius: 8px;
+  color: #c62828;
+  font-size: 14px;
+}
+
+/* Results Section */
+.results-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.result-header {
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.result-title h3 {
+  font-size: 24px;
+  color: #2c5f2d;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.detected {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-badge.healthy {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.result-metrics {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Result Cards */
+.result-card {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid #4caf50;
+}
+
+.result-card h4 {
+  font-size: 16px;
+  color: #2c5f2d;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.result-card p {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.result-card.causes {
+  border-left-color: #ff9800;
+}
+
+.result-card.treatment {
+  border-left-color: #2196f3;
+  background: #f0f7ff;
+}
+
+.result-card.prevention {
+  border-left-color: #4caf50;
+  background: #f1f8f4;
+}
+
+.result-card.recommendations {
+  border-left-color: #9c27b0;
+  background: #f9f0ff;
+}
+
+.result-card.alert {
+  border-left-color: #f44336;
+  background: #fff3f3;
+}
+
+.result-card.visual-obs {
+  border-left-color: #00bcd4;
+  background: #e0f7fa;
+}
+
+.result-card.diagnosis {
+  border-left-color: #ff9800;
+  background: #fff3e0;
+}
+
+.result-card.stage {
+  border-left-color: #673ab7;
+  background: #f3e5f5;
+}
+
+.result-card.info {
+  border-left-color: #607d8b;
+  background: #eceff1;
+}
+
+/* Visual Observations Grid */
+.observations-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.obs-item {
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #b2ebf2;
+}
+
+.obs-item strong {
+  display: block;
+  color: #00838f;
+  margin-bottom: 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.obs-item p {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Stage Analysis */
+.stage-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stage-item {
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+}
+
+.stage-item strong {
+  display: block;
+  color: #6a1b9a;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.stage-item p {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.stage-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #6a1b9a;
+  color: white;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+/* Diagnosis List */
+.diagnosis-list {
+  margin: 0;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.diagnosis-list li {
+  color: #555;
+  line-height: 1.6;
+  padding: 8px;
+  background: white;
+  border-radius: 6px;
+}
+
+/* Risk Items */
+.risk-item {
+  margin-bottom: 12px;
+}
+
+.risk-item strong {
+  display: block;
+  color: #c62828;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.risk-item p {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Lists */
+.symptoms-list,
+.causes-list,
+.prevention-list,
+.recommendations-list {
+  margin: 0;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.symptoms-list li,
+.causes-list li,
+.prevention-list li,
+.recommendations-list li {
+  color: #555;
+  line-height: 1.6;
+}
+
+.treatment-list {
+  margin: 0;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  counter-reset: treatment-counter;
+}
+
+.treatment-list li {
+  color: #555;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 8px;
+}
+
+.treatment-list li::marker {
+  color: #2196f3;
+  font-weight: 700;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 6px 14px;
+  background: white;
+  border: 2px solid #4caf50;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c5f2d;
+  text-transform: capitalize;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .health-content {
+    grid-template-columns: 1fr;
+  }
+
+  .results-section {
+    order: 2;
+  }
+
+  .upload-section {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .crop-health-container {
+    padding: 16px;
+  }
+
+  .health-header h2 {
+    font-size: 24px;
+  }
+
+  .upload-area {
+    padding: 32px 16px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .result-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .result-metrics {
+    gap: 16px;
+  }
+
+  .results-section {
+    padding: 16px;
+  }
+}

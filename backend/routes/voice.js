@@ -1,42 +1,35 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const whisperService = require('../services/whisperService');
-const ttsService = require('../services/ttsService');
-const aiService = require('../services/aiService');
-const memoryService = require('../services/memoryService');
-const { SensorHistory } = require('../models/SensorHistory');
+const FormData = require('form-data');
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 
-// Multer config for audio uploads
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB limit (Whisper limit)
+// Configure multer for file upload
+const upload = multer({ 
+  dest: 'uploads/',
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB limit
   fileFilter: (req, file, cb) => {
-    const allowedMimes = [
-      'audio/mpeg', 'audio/mp4', 'audio/wav', 'audio/webm',
-      'audio/ogg', 'audio/flac', 'audio/aac'
-    ];
-    if (allowedMimes.includes(file.mimetype)) {
+    // Accept audio files
+    if (file.mimetype.startsWith('audio/') || file.mimetype === 'video/webm') {
       cb(null, true);
     } else {
-      cb(new Error(`Unsupported audio format: ${file.mimetype}`));
+      cb(new Error('Only audio files are allowed'));
     }
   }
 });
 
 /**
  * POST /api/voice/transcribe
- * Convert speech (audio) to text
- * 
- * Request:
- *   - file: audio file (multipart)
- *   - language: optional language code (e.g., 'en', 'hi')
- * 
- * Response:
- *   { text, language, timestamp, duration }
+ * Transcribe audio to text using OpenAI Whisper
  */
 router.post('/transcribe', upload.single('audio'), async (req, res) => {
+  let filePath = null;
+  
   try {
+    console.log('📝 Transcription request received');
+    
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -44,300 +37,177 @@ router.post('/transcribe', upload.single('audio'), async (req, res) => {
       });
     }
 
-    const language = req.body.language || null;
-    console.log(`\n🎤 Transcribing audio (${(req.file.size / 1024).toFixed(2)} KB)`);
+    filePath = req.file.path;
+    console.log('📁 File saved:', filePath);
+    console.log('📦 File size:', req.file.size, 'bytes');
+    console.log('🎵 MIME type:', req.file.mimetype);
 
-    // Transcribe using Whisper
-    const result = await whisperService.transcribeAudio(req.file.buffer, language);
-
-    if (!result.success) {
-      return res.status(500).json({
-        success: false,
-        error: result.error
-      });
+    // Check if OpenAI API key exists
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY not configured');
     }
 
-    console.log(`✅ Transcription: "${result.text}"`);
-    console.log(`   Language: ${result.language}`);
-
-    res.json({
-      success: true,
-      text: result.text,
-      language: result.language,
-      duration: result.duration,
-      confidence: result.confidence,
-      timestamp: result.timestamp
+    // Create form data for OpenAI Whisper API
+    const formData = new FormData();
+    formData.append('file', fs.createReadStream(filePath), {
+      filename: 'audio.webm',
+      contentType: req.file.mimetype
     });
+    formData.append('model', 'whisper-1');
+    formData.append('language', 'en'); // You can make this dynamic
 
-  } catch (error) {
-    console.error('❌ Transcription error:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message
-    });
-  }
-});
+    console.log('🚀 Sending to OpenAI Whisper API...');
 
-/**
- * POST /api/voice/chat
- * Complete voice chat: transcribe → process → synthesize
- * 
- * Request:
- *   - file: audio file (multipart)
- *   - userId: farmer ID (optional)
- *   - language: language code (optional, auto-detected)
- * 
- * Response:
- *   {
- *     query: transcribed text,
- *     language: detected language,
- *     response: AI text response,
- *     audioBuffer: base64 encoded audio,
- *     audioFormat: mp3/wav/etc,
- *     insights: { ... },
- *     actions: [ ... ],
- *     alerts: [ ... ]
- *   }
- */
-router.post('/chat', upload.single('audio'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        error: 'No audio file provided'
-      });
-    }
-
-    const userId = req.body.userId || 'farmer_001';
-    const requestedLanguage = req.body.language || null;
-
-    console.log(`\n🎤 Voice chat started for ${userId}`);
-
-    // ============ STEP 1: TRANSCRIBE AUDIO ============
-    const transcription = await whisperService.transcribeAudio(
-      req.file.buffer,
-      requestedLanguage
+    // Call OpenAI Whisper API
+    const response = await axios.post(
+      'https://api.openai.com/v1/audio/transcriptions',
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        maxBodyLength: Infinity,
+        maxContentLength: Infinity
+      }
     );
 
-    if (!transcription.success) {
-      return res.status(500).json({
-        success: false,
-        error: `Transcription failed: ${transcription.error}`
-      });
-    }
+    const transcription = response.data.text;
+    console.log('✅ Transcription successful:', transcription);
 
-    const query = transcription.text;
-    const detectedLanguage = transcription.language;
+    // Clean up the uploaded file
+    fs.unlinkSync(filePath);
 
-    console.log(`📝 Transcribed: "${query}"`);
-    console.log(`🌍 Language: ${detectedLanguage}`);
-
-    // ============ STEP 2: PROCESS QUERY ============
-    // Get current sensor data
-    const latestSensor = await SensorHistory.getLatestReading(userId);
-
-    if (!latestSensor) {
-      return res.status(400).json({
-        success: false,
-        error: 'No sensor data available'
-      });
-    }
-
-    const currentSensors = {
-      moisture: latestSensor.moisture,
-      ph: latestSensor.ph,
-      nitrogen: latestSensor.nitrogen,
-      phosphorus: latestSensor.phosphorus,
-      potassium: latestSensor.potassium,
-      temperature: latestSensor.temperature,
-      humidity: latestSensor.humidity,
-      crop: latestSensor.cropType,
-      motorStatus: latestSensor.motorStatus,
-      manualMode: latestSensor.manualMode
-    };
-
-    console.log(`🧠 Processing query through LangGraph...`);
-
-    // Process through AI
-    const aiResult = await aiService.processQuery(userId, query, currentSensors);
-
-    if (!aiResult.success) {
-      return res.status(500).json({
-        success: false,
-        error: `AI processing failed: ${aiResult.error}`,
-        query,
-        language: detectedLanguage
-      });
-    }
-
-    const aiResponse = aiResult.response;
-    console.log(`💬 AI Response: "${aiResponse.substring(0, 50)}..."`);
-
-    // ============ STEP 3: SYNTHESIZE SPEECH ============
-    const voice = req.body.voice || 'nova';
-    const speed = parseFloat(req.body.speed) || 1.0;
-
-    console.log(`🔊 Synthesizing speech (${voice}, speed: ${speed})...`);
-
-    const ttsResult = await ttsService.textToSpeech(aiResponse, {
-      language: detectedLanguage,
-      voice,
-      format: 'mp3',
-      speed
-    });
-
-    if (!ttsResult.success) {
-      return res.status(500).json({
-        success: false,
-        error: `Speech synthesis failed: ${ttsResult.error}`,
-        query,
-        response: aiResponse
-      });
-    }
-
-    console.log(`✅ Voice chat complete!`);
-
-    // ============ RESPONSE ============
     res.json({
       success: true,
-      
-      // Original query
-      query,
-      language: detectedLanguage,
-      
-      // AI response
-      response: aiResponse,
-      insights: aiResult.insights,
-      actions: aiResult.actions,
-      alerts: aiResult.alerts,
-      
-      // Audio response
-      audio: ttsResult.audioBuffer.toString('base64'),
-      audioFormat: ttsResult.audioFormat,
-      audioSize: ttsResult.size,
-      
-      // Metadata
-      conversationId: aiResult.conversationId,
-      processingTime: aiResult.processingTime + ttsResult.processingTime,
-      timestamp: new Date()
+      transcription: transcription.trim()
     });
 
   } catch (error) {
-    console.error('❌ Voice chat error:', error);
+    console.error('❌ Transcription error:', error.message);
+    
+    // Clean up file if it exists
+    if (filePath && fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (cleanupError) {
+        console.error('Error cleaning up file:', cleanupError);
+      }
+    }
+
+    // Send appropriate error response
+    let errorMessage = 'Could not transcribe audio';
+    
+    if (error.response) {
+      console.error('OpenAI API error:', error.response.data);
+      errorMessage = error.response.data.error?.message || errorMessage;
+    } else if (error.message.includes('OPENAI_API_KEY')) {
+      errorMessage = 'OpenAI API key not configured';
+    }
+
     res.status(500).json({
       success: false,
-      error: error.message
+      error: errorMessage
     });
   }
 });
 
 /**
  * POST /api/voice/synthesize
- * Convert text to speech only
- * 
- * Request:
- *   - text: text to convert
- *   - voice: voice name (nova, echo, alloy, etc.)
- *   - language: language code
- *   - speed: 0.25 - 4.0
- * 
- * Response:
- *   { audio (base64), audioFormat, audioSize }
+ * Convert text to speech using OpenAI TTS
  */
 router.post('/synthesize', async (req, res) => {
   try {
-    const { text, voice = 'nova', language = 'en', speed = 1.0 } = req.body;
+    const { text, voice = 'nova', format = 'mp3' } = req.body;
 
-    if (!text || text.trim().length === 0) {
+    if (!text) {
       return res.status(400).json({
         success: false,
-        error: 'Text cannot be empty'
+        error: 'Text is required'
       });
     }
 
-    console.log(`🔊 Synthesizing: "${text.substring(0, 50)}..."`);
+    console.log('🔊 TTS request:', { text: text.substring(0, 50), voice, format });
 
-    const result = await ttsService.textToSpeech(text, {
-      language,
-      voice,
-      format: 'mp3',
-      speed
-    });
-
-    if (!result.success) {
-      return res.status(500).json({
-        success: false,
-        error: result.error
-      });
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY not configured');
     }
 
-    res.json({
-      success: true,
-      audio: result.audioBuffer.toString('base64'),
-      audioFormat: result.audioFormat,
-      audioSize: result.size,
-      voice,
-      language,
-      speed,
-      processingTime: result.processingTime
-    });
+    // Call OpenAI TTS API
+    const response = await axios.post(
+      'https://api.openai.com/v1/audio/speech',
+      {
+        model: 'tts-1',
+        voice: voice,
+        input: text,
+        response_format: format
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        responseType: 'arraybuffer'
+      }
+    );
+
+    const audioBuffer = Buffer.from(response.data);
+    console.log('✅ TTS successful, audio size:', audioBuffer.length, 'bytes');
+
+    // Set appropriate content type
+    const contentTypes = {
+      mp3: 'audio/mpeg',
+      opus: 'audio/opus',
+      aac: 'audio/aac',
+      flac: 'audio/flac'
+    };
+
+    res.set('Content-Type', contentTypes[format] || 'audio/mpeg');
+    res.send(audioBuffer);
 
   } catch (error) {
-    console.error('❌ Synthesis error:', error);
+    console.error('❌ TTS error:', error.message);
+    
+    let errorMessage = 'Could not synthesize speech';
+    
+    if (error.response) {
+      console.error('OpenAI API error:', error.response.data);
+      errorMessage = error.response.data.error?.message || errorMessage;
+    }
+
     res.status(500).json({
       success: false,
-      error: error.message
+      error: errorMessage
     });
   }
 });
 
 /**
- * GET /api/voice/languages
- * Get supported languages
- */
-router.get('/languages', (req, res) => {
-  const languages = whisperService.getLanguagesForUI();
-
-  res.json({
-    success: true,
-    count: languages.length,
-    languages
-  });
-});
-
-/**
  * GET /api/voice/voices
- * Get available TTS voices
+ * Get available voices for TTS
  */
 router.get('/voices', (req, res) => {
-  const voices = ttsService.getVoicesForUI();
-
   res.json({
     success: true,
-    count: voices.length,
-    voices
+    voices: [
+      { id: 'alloy', name: 'Alloy', description: 'Neutral and balanced' },
+      { id: 'echo', name: 'Echo', description: 'Clear and articulate' },
+      { id: 'fable', name: 'Fable', description: 'Warm and expressive' },
+      { id: 'onyx', name: 'Onyx', description: 'Deep and authoritative' },
+      { id: 'nova', name: 'Nova', description: 'Energetic and friendly' },
+      { id: 'shimmer', name: 'Shimmer', description: 'Soft and gentle' }
+    ]
   });
 });
 
 /**
- * GET /api/voice/info
- * Get voice system information
+ * GET /api/voice/formats
+ * Get available audio formats
  */
-router.get('/info', (req, res) => {
+router.get('/formats', (req, res) => {
   res.json({
     success: true,
-    system: {
-      stt: 'OpenAI Whisper API',
-      tts: 'OpenAI TTS API',
-      supportedLanguages: Object.keys(whisperService.getSupportedLanguages()).length,
-      supportedVoices: Object.keys(ttsService.getSupportedVoices()).length,
-      supportedFormats: Object.keys(ttsService.getSupportedFormats()).length,
-      maxAudioSize: '25MB',
-      pricing: {
-        whisper: '$0.02 per minute',
-        tts: '$0.015 per 1K characters'
-      }
-    }
+    formats: ['mp3', 'opus', 'aac', 'flac']
   });
 });
 

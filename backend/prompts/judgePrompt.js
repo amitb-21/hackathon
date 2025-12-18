@@ -1,21 +1,24 @@
 const getJudgePrompt = (originalQuery, aiResponse, context) => {
+  // Safe destructuring with defaults
+  const currentSensors = context?.currentSensors || {};
+  
   return `You are an expert agricultural judge evaluating an AI farming assistant's response.
 
 # FARMER'S QUERY:
 "${originalQuery}"
 
 # CURRENT CONTEXT PROVIDED:
-- Soil Moisture: ${context.currentSensors.moisture}%
-- Soil pH: ${context.currentSensors.ph}
-- Nitrogen: ${context.currentSensors.nitrogen} ppm
-- Phosphorus: ${context.currentSensors.phosphorus} ppm
-- Potassium: ${context.currentSensors.potassium} ppm
-- Temperature: ${context.currentSensors.temperature}°C
-- Humidity: ${context.currentSensors.humidity}%
-- Crop: ${context.currentSensors.crop}
+- Soil Moisture: ${currentSensors.moisture || 0}%
+- Soil pH: ${currentSensors.ph || 6.5}
+- Nitrogen: ${currentSensors.nitrogen || 150} ppm
+- Phosphorus: ${currentSensors.phosphorus || 50} ppm
+- Potassium: ${currentSensors.potassium || 180} ppm
+- Temperature: ${currentSensors.temperature || 25}°C
+- Humidity: ${currentSensors.humidity || 60}%
+- Crop: ${currentSensors.crop || 'Unknown'}
 
 # AI'S RESPONSE:
-${aiResponse}
+${aiResponse || 'No response provided'}
 
 # EVALUATION CRITERIA (Score 0-100):
 
@@ -85,39 +88,46 @@ Respond ONLY with valid JSON (no markdown, no extra text):
  * Fed back to AI when score < 85
  */
 const getRetryPrompt = (originalQuery, previousResponse, judgeFeedback, context) => {
+  // Safe destructuring with defaults
+  const currentSensors = context?.currentSensors || {};
+  const pastConversations = context?.pastConversations || [];
+  const weaknesses = judgeFeedback?.weaknesses || [];
+  const suggestions = judgeFeedback?.suggestions || [];
+  const score = judgeFeedback?.score || 0;
+  
   return `You are AgriSmart AI, an expert agricultural consultant.
 
 A farmer asked: "${originalQuery}"
 
 You provided this response:
-${previousResponse}
+${previousResponse || 'No previous response'}
 
-However, it scored ${judgeFeedback.score}/100 from an expert judge. Here's the feedback:
+However, it scored ${score}/100 from an expert judge. Here's the feedback:
 
 ## Judge's Feedback:
 
 **Weaknesses:**
-${judgeFeedback.weaknesses.map(w => `- ${w}`).join('\n')}
+${weaknesses.length > 0 ? weaknesses.map(w => `- ${w}`).join('\n') : '- None specified'}
 
 **Suggestions for Improvement:**
-${judgeFeedback.suggestions.map(s => `- ${s}`).join('\n')}
+${suggestions.length > 0 ? suggestions.map(s => `- ${s}`).join('\n') : '- None specified'}
 
 ---
 
 ## CURRENT CONTEXT:
-- Soil Moisture: ${context.currentSensors.moisture}%
-- Soil pH: ${context.currentSensors.ph}
-- Nitrogen: ${context.currentSensors.nitrogen} ppm
-- Phosphorus: ${context.currentSensors.phosphorus} ppm
-- Potassium: ${context.currentSensors.potassium} ppm
-- Temperature: ${context.currentSensors.temperature}°C
-- Humidity: ${context.currentSensors.humidity}%
-- Crop: ${context.currentSensors.crop}
+- Soil Moisture: ${currentSensors.moisture || 0}%
+- Soil pH: ${currentSensors.ph || 6.5}
+- Nitrogen: ${currentSensors.nitrogen || 150} ppm
+- Phosphorus: ${currentSensors.phosphorus || 50} ppm
+- Potassium: ${currentSensors.potassium || 180} ppm
+- Temperature: ${currentSensors.temperature || 25}°C
+- Humidity: ${currentSensors.humidity || 60}%
+- Crop: ${currentSensors.crop || 'Unknown'}
 
 Recent History:
-${context.pastConversations && context.pastConversations.length > 0 
-  ? context.pastConversations.slice(0, 3).map(c => 
-      `- ${c.daysAgo}d ago: "${c.query}" (${c.wasSuccessful ? 'Success ✅' : 'Failed ❌'})`
+${pastConversations.length > 0 
+  ? pastConversations.slice(0, 3).map(c => 
+      `- ${c.daysAgo || 0}d ago: "${c.query || 'N/A'}" (${c.wasSuccessful ? 'Success ✅' : 'Failed ❌'})`
     ).join('\n')
   : 'No recent history'}
 

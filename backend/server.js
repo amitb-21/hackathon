@@ -34,12 +34,14 @@ const sensorRoutes = require('./routes/sensor');
 const chatRoutes = require('./routes/chat');
 const memoryRoutes = require('./routes/memory');
 const voiceRoutes = require('./routes/voice');
+const diseaseRoutes = require('./routes/disease');
 
 // API Routes
 app.use('/api/sensor', sensorRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/memory', memoryRoutes);
 app.use('/api/voice', voiceRoutes);
+app.use('/api/disease', diseaseRoutes);
 
 // ==================== MQTT SETUP ====================
 

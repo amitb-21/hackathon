@@ -217,22 +217,53 @@ function App() {
     }
   };
 
-  // Chat handlers
+  // Chat handlers - FIXED VERSION
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
-    setChatMessages((prev) => [...prev, { type: "user", text: userInput }]);
+
+    const userMessage = userInput.trim();
+
+    // Add user message immediately
+    setChatMessages((prev) => [...prev, { type: "user", text: userMessage }]);
+    setUserInput("");
     setIsAiTyping(true);
+
     try {
-      const data = await api.sendChatMessage(userInput);
-      setChatMessages((prev) => [...prev, { type: "ai", text: data.response }]);
+      console.log("📤 Sending message:", userMessage);
+      const data = await api.sendChatMessage(userMessage);
+      console.log("📥 Received response:", data);
+
+      if (data.success) {
+        // Add AI response
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            type: "ai",
+            text: data.response,
+            insights: data.insights,
+            actions: data.actions,
+            alerts: data.alerts,
+          },
+        ]);
+      } else {
+        // Add error message
+        setChatMessages((prev) => [
+          ...prev,
+          {
+            type: "ai",
+            text: data.error || "Sorry, I couldn't process your request.",
+          },
+        ]);
+      }
     } catch (error) {
+      console.error("Chat error:", error);
       setChatMessages((prev) => [
         ...prev,
-        { type: "ai", text: "Error connecting to AI." },
+        { type: "ai", text: "Error connecting to AI. Please try again." },
       ]);
+    } finally {
+      setIsAiTyping(false);
     }
-    setIsAiTyping(false);
-    setUserInput("");
   };
 
   // Image handlers
