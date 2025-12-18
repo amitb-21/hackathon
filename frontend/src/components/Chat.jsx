@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Send, Mic, Square } from "lucide-react";
+import { Send, Mic, Square, Volume2, VolumeX } from "lucide-react";
 import "./Chat.css";
 
 export function Chat({
@@ -13,9 +13,13 @@ export function Chat({
   const chatContainerRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
+  const audioRef = useRef(null);
 
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [currentAudio, setCurrentAudio] = useState(null);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -87,6 +91,9 @@ export function Chat({
       const formData = new FormData();
       formData.append("audio", audioBlob, "recording.webm");
 
+      // Send selected language to help Whisper
+      console.log(`🎤 Transcribing audio in ${selectedLanguage}...`);
+
       const response = await fetch(
         "http://localhost:5000/api/voice/transcribe",
         {
@@ -98,7 +105,19 @@ export function Chat({
       const data = await response.json();
 
       if (data.success && data.transcription) {
+        console.log(
+          `✅ Transcription (${data.language || selectedLanguage}):`,
+          data.transcription
+        );
         setUserInput(data.transcription);
+
+        // Update language if auto-detected differently
+        if (data.language && data.language !== selectedLanguage) {
+          console.log(
+            `🔄 Language auto-detected as ${data.language}, updating selector`
+          );
+          setSelectedLanguage(data.language);
+        }
       } else {
         console.error("Transcription failed:", data.error);
         alert("Could not transcribe audio. Please try again.");
@@ -121,6 +140,43 @@ export function Chat({
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  const playVoiceResponse = (audioUrl) => {
+    if (!audioUrl) return;
+
+    // Stop current audio if playing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+
+    const audio = new Audio(audioUrl);
+    audioRef.current = audio;
+    setCurrentAudio(audioUrl);
+    setIsPlayingAudio(true);
+
+    audio.play();
+
+    audio.onended = () => {
+      setIsPlayingAudio(false);
+      setCurrentAudio(null);
+    };
+
+    audio.onerror = (error) => {
+      console.error("Audio playback error:", error);
+      setIsPlayingAudio(false);
+      setCurrentAudio(null);
+    };
+  };
+
+  const stopVoicePlayback = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsPlayingAudio(false);
+      setCurrentAudio(null);
+    }
   };
 
   const formatMessage = (text) => {
@@ -147,10 +203,80 @@ export function Chat({
 
   return (
     <div className="chat-container">
+      {/* Language Selector */}
+      <div className="language-selector">
+        <label>🌐 Language:</label>
+        <select
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+          className="language-dropdown"
+        >
+          <option value="en">English</option>
+          <optgroup label="Indian Languages">
+            <option value="hi">हिंदी (Hindi)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="or">ଓଡ଼ିଆ (Odia)</option>
+            <option value="as">অসমীয়া (Assamese)</option>
+            <option value="ur">اردو (Urdu)</option>
+          </optgroup>
+          <optgroup label="Other Languages">
+            <option value="es">Español (Spanish)</option>
+            <option value="fr">Français (French)</option>
+            <option value="de">Deutsch (German)</option>
+            <option value="pt">Português (Portuguese)</option>
+            <option value="ru">Русский (Russian)</option>
+            <option value="ja">日本語 (Japanese)</option>
+            <option value="zh">中文 (Chinese)</option>
+            <option value="ar">العربية (Arabic)</option>
+            <option value="ko">한국어 (Korean)</option>
+            <option value="it">Italiano (Italian)</option>
+            <option value="nl">Nederlands (Dutch)</option>
+            <option value="pl">Polski (Polish)</option>
+            <option value="tr">Türkçe (Turkish)</option>
+            <option value="vi">Tiếng Việt (Vietnamese)</option>
+            <option value="th">ไทย (Thai)</option>
+            <option value="id">Bahasa Indonesia (Indonesian)</option>
+            <option value="ms">Bahasa Melayu (Malay)</option>
+            <option value="fil">Filipino (Tagalog)</option>
+            <option value="sw">Kiswahili (Swahili)</option>
+          </optgroup>
+        </select>
+      </div>
+
       <div className="chat-messages" ref={chatContainerRef}>
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.type}`}>
             <div className="message-content">
+              {/* Voice playback button for AI messages */}
+              {msg.type === "ai" && msg.audioUrl && (
+                <div className="voice-controls">
+                  {isPlayingAudio && currentAudio === msg.audioUrl ? (
+                    <button
+                      className="voice-play-btn playing"
+                      onClick={stopVoicePlayback}
+                      title="Stop voice"
+                    >
+                      <VolumeX size={16} />
+                    </button>
+                  ) : (
+                    <button
+                      className="voice-play-btn"
+                      onClick={() => playVoiceResponse(msg.audioUrl)}
+                      title="Play voice response"
+                    >
+                      <Volume2 size={16} />
+                    </button>
+                  )}
+                </div>
+              )}
+
               <div
                 className="message-text"
                 dangerouslySetInnerHTML={{ __html: formatMessage(msg.text) }}

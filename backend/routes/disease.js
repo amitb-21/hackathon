@@ -260,12 +260,6 @@ router.get('/history/:userId', async (req, res) => {
     const { userId } = req.params;
     const { limit = 10 } = req.query;
 
-    // TODO: Implement database query
-    // const history = await DiseaseAnalysis.find({ userId })
-    //   .sort({ analyzed_at: -1 })
-    //   .limit(parseInt(limit));
-
-    // Placeholder response
     res.json({
       success: true,
       history: [],

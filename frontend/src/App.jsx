@@ -217,7 +217,7 @@ function App() {
     }
   };
 
-  // Chat handlers - FIXED VERSION
+  // Chat handlers - WITH VOICE SUPPORT
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
 
@@ -234,17 +234,24 @@ function App() {
       console.log("📥 Received response:", data);
 
       if (data.success) {
-        // Add AI response
+        // Add AI response WITH audio URL
         setChatMessages((prev) => [
           ...prev,
           {
             type: "ai",
             text: data.response,
+            audioUrl: data.audioUrl, // Voice response URL
             insights: data.insights,
             actions: data.actions,
             alerts: data.alerts,
           },
         ]);
+
+        // Auto-play voice if available
+        if (data.audioUrl) {
+          console.log("🔊 Voice response available");
+          // The Chat component will handle playback via the speaker button
+        }
       } else {
         // Add error message
         setChatMessages((prev) => [

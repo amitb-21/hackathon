@@ -54,9 +54,17 @@ router.post('/transcribe', upload.single('audio'), async (req, res) => {
       contentType: req.file.mimetype
     });
     formData.append('model', 'whisper-1');
-    formData.append('language', 'en'); // You can make this dynamic
+    // Auto-detect language (supports Odia, Hindi, English, and 50+ languages)
+    // Or specify language from request: req.body.language
+    if (req.body.language) {
+      formData.append('language', req.body.language);
+    }
+    // Note: Whisper supports these languages with 'or' code:
+    // Odia (Oriya): 'or'
+    // Hindi: 'hi' 
+    // English: 'en'
 
-    console.log('🚀 Sending to OpenAI Whisper API...');
+    console.log('🤖 Analyzing with OpenAI Whisper API...');
 
     // Call OpenAI Whisper API
     const response = await axios.post(
@@ -74,13 +82,18 @@ router.post('/transcribe', upload.single('audio'), async (req, res) => {
 
     const transcription = response.data.text;
     console.log('✅ Transcription successful:', transcription);
+    
+    // Detect language from transcription (simple detection)
+    const detectedLanguage = req.body.language || detectLanguage(transcription);
+    console.log('🌐 Language:', req.body.language ? `Specified as ${req.body.language}` : `Auto-detected as ${detectedLanguage}`);
 
     // Clean up the uploaded file
     fs.unlinkSync(filePath);
 
     res.json({
       success: true,
-      transcription: transcription.trim()
+      transcription: transcription.trim(),
+      language: detectedLanguage
     });
 
   } catch (error) {
@@ -201,6 +214,57 @@ router.get('/voices', (req, res) => {
 });
 
 /**
+ * GET /api/voice/languages
+ * Get supported languages for voice input and output
+ */
+router.get('/languages', (req, res) => {
+  res.json({
+    success: true,
+    languages: {
+      indian: [
+        { code: 'hi', name: 'Hindi', native: 'हिंदी', script: 'Devanagari' },
+        { code: 'bn', name: 'Bengali', native: 'বাংলা', script: 'Bengali' },
+        { code: 'te', name: 'Telugu', native: 'తెలుగు', script: 'Telugu' },
+        { code: 'ta', name: 'Tamil', native: 'தமிழ்', script: 'Tamil' },
+        { code: 'mr', name: 'Marathi', native: 'मराठी', script: 'Devanagari' },
+        { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી', script: 'Gujarati' },
+        { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', script: 'Kannada' },
+        { code: 'ml', name: 'Malayalam', native: 'മലയാളം', script: 'Malayalam' },
+        { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ', script: 'Gurmukhi' },
+        { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ', script: 'Odia' },
+        { code: 'as', name: 'Assamese', native: 'অসমীয়া', script: 'Bengali' },
+        { code: 'ur', name: 'Urdu', native: 'اردو', script: 'Arabic' }
+      ],
+      international: [
+        { code: 'en', name: 'English', native: 'English' },
+        { code: 'es', name: 'Spanish', native: 'Español' },
+        { code: 'fr', name: 'French', native: 'Français' },
+        { code: 'de', name: 'German', native: 'Deutsch' },
+        { code: 'pt', name: 'Portuguese', native: 'Português' },
+        { code: 'ru', name: 'Russian', native: 'Русский' },
+        { code: 'ja', name: 'Japanese', native: '日本語' },
+        { code: 'zh', name: 'Chinese', native: '中文' },
+        { code: 'ar', name: 'Arabic', native: 'العربية' },
+        { code: 'ko', name: 'Korean', native: '한국어' },
+        { code: 'it', name: 'Italian', native: 'Italiano' },
+        { code: 'nl', name: 'Dutch', native: 'Nederlands' },
+        { code: 'pl', name: 'Polish', native: 'Polski' },
+        { code: 'tr', name: 'Turkish', native: 'Türkçe' },
+        { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt' },
+        { code: 'th', name: 'Thai', native: 'ไทย' },
+        { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia' },
+        { code: 'ms', name: 'Malay', native: 'Bahasa Melayu' },
+        { code: 'fil', name: 'Filipino', native: 'Filipino' },
+        { code: 'sw', name: 'Swahili', native: 'Kiswahili' }
+      ]
+    },
+    total_supported: 32,
+    whisper_note: 'OpenAI Whisper supports 50+ languages for speech-to-text',
+    tts_note: 'OpenAI TTS can synthesize speech in all languages'
+  });
+});
+
+/**
  * GET /api/voice/formats
  * Get available audio formats
  */
@@ -210,5 +274,37 @@ router.get('/formats', (req, res) => {
     formats: ['mp3', 'opus', 'aac', 'flac']
   });
 });
+
+/**
+ * Language detection based on Unicode character ranges
+ * Supports all major Indian languages
+ */
+function detectLanguage(text) {
+  // Indian Language Unicode Ranges
+  const languagePatterns = {
+    'or': /[\u0B00-\u0B7F]/,    // Odia (Oriya)
+    'hi': /[\u0900-\u097F]/,    // Hindi (Devanagari)
+    'bn': /[\u0980-\u09FF]/,    // Bengali
+    'te': /[\u0C00-\u0C7F]/,    // Telugu
+    'ta': /[\u0B80-\u0BFF]/,    // Tamil
+    'mr': /[\u0900-\u097F]/,    // Marathi (uses Devanagari)
+    'gu': /[\u0A80-\u0AFF]/,    // Gujarati
+    'kn': /[\u0C80-\u0CFF]/,    // Kannada
+    'ml': /[\u0D00-\u0D7F]/,    // Malayalam
+    'pa': /[\u0A00-\u0A7F]/,    // Punjabi (Gurmukhi)
+    'as': /[\u0980-\u09FF]/,    // Assamese (uses Bengali script)
+    'ur': /[\u0600-\u06FF]/,    // Urdu (Arabic script)
+  };
+  
+  // Check each language pattern
+  for (const [langCode, pattern] of Object.entries(languagePatterns)) {
+    if (pattern.test(text)) {
+      return langCode;
+    }
+  }
+  
+  // Default to English
+  return 'en';
+}
 
 module.exports = router;

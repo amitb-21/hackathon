@@ -1,8 +1,47 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios'); // ✅ ADD THIS for voice generation
 const aiService = require('../services/aiService');
 const memoryService = require('../services/memoryService');
 const { SensorHistory } = require('../models/SensorHistory');
+
+// ✅ ADD THIS FUNCTION - Voice Generation
+async function generateVoiceResponse(text, voice = 'nova', language = 'en') {
+  if (!process.env.OPENAI_API_KEY) {
+    console.warn('⚠️ OPENAI_API_KEY not set, skipping voice generation');
+    return null;
+  }
+
+  try {
+    console.log(`🎤 Generating voice response (${language})...`);
+    
+    const response = await axios.post(
+      'https://api.openai.com/v1/audio/speech',
+      {
+        model: 'tts-1',
+        voice: voice,
+        input: text,
+        response_format: 'mp3'
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        responseType: 'arraybuffer'
+      }
+    );
+
+    // Convert to base64 for easy transmission
+    const audioBase64 = Buffer.from(response.data).toString('base64');
+    console.log('✅ Voice generated successfully');
+    return `data:audio/mp3;base64,${audioBase64}`;
+
+  } catch (error) {
+    console.error('⚠️ Voice generation failed:', error.message);
+    return null; // Fail gracefully - chat still works without voice
+  }
+}
 
 /**
  * POST /api/chat
@@ -10,7 +49,7 @@ const { SensorHistory } = require('../models/SensorHistory');
  */
 router.post('/', async (req, res) => {
   try {
-    const { message, userId } = req.body;
+    const { message, userId, includeVoice = true, voice = 'nova', language = 'en' } = req.body; // ✅ ADD VOICE PARAMS
 
     if (!message || !message.trim()) {
       return res.status(400).json({
@@ -57,10 +96,18 @@ router.post('/', async (req, res) => {
       });
     }
 
+    // ✅ ADD THIS: Generate voice response
+    let audioUrl = null;
+    if (includeVoice && result.response) {
+      audioUrl = await generateVoiceResponse(result.response, voice, language);
+    }
+
     return res.json({
       success: true,
       conversationId: result.conversationId,
       response: result.response,
+      audioUrl: audioUrl, // ✅ ADD THIS LINE
+      language: language, // ✅ ADD THIS LINE
       insights: result.insights,
       actions: result.actions,
       alerts: result.alerts,
